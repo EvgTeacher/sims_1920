@@ -1,5 +1,6 @@
 import random
 
+
 class Human:
     def __init__(self, name='Human', job=None, home=None, car=None):
         self.name = name
@@ -12,8 +13,10 @@ class Human:
 
     def get_home(self):
         self.home = Home()
+
     def get_car(self):
         self.car = Auto(brand_of_car)
+
     def get_job(self):
         if self.car.drive():
             pass
@@ -21,30 +24,70 @@ class Human:
             self.to_repair()
             return
         self.job = Job(job_list)
+
     def eat(self):
         if self.home.food <= 0:
             self.shopping('food')
         else:
-           if self.satiety > 100:
-               self.satiety = 100
-               return
+            if self.satiety > 100:
+                self.satiety = 100
+                return
+            self.satiety += 5
+            self.home.food -= 5
 
     def work(self):
-        pass
-    def shopping(self):
-        pass
+        if self.car.drive():
+            pass
+        else:
+            if self.car.fuel < 10:
+                self.shopping('fuel')
+                return
+            else:
+                self.to_repair()
+                return
+        self.money += self.job.salary
+        self.gladness += self.job.gladness_less
+        self.satiety -= 4
+
+    def shopping(self, manage):
+        if self.car.drive():
+            pass
+        else:
+            if self.car.fuel < 10:
+                manage = 'fuel'
+            else:
+                self.to_repair()
+
+
     def chill(self):
-        pass
+        self.gladness += 10
+        self.home.mess += 5
+
     def clear_home(self):
-        pass
+        self.gladness -= 10
+        self.home.mess = 0
+
     def to_repair(self):
-        pass
+        self.car.strength = 100
+        self.money -= 50
+
     def indexes_day(self, day):
         pass
+
     def is_alive(self):
-        pass
+        if self.gladness <=0:
+            print('Depression')
+            return False
+        if self.satiety <= 0:
+            print('Dead....')
+            return False
+        if self.money < -200:
+            print('Bankrupt...')
+            return False
+
     def live(self):
         pass
+
 
 class Auto:
     def __init__(self, brand_list):
@@ -61,10 +104,13 @@ class Auto:
         else:
             print('The car cannot move....')
             return False
+
+
 class Home:
     def __init__(self):
         self.mess = 0
         self.food = 0
+
 
 class Job:
     def __init__(self, job_list):
@@ -77,9 +123,6 @@ job_list = {'Java': {'salary': 50, "gladness_less": 10},
             'C++': {'salary': 80, "gladness_less": 5},
             'Python': {'salary': 30, "gladness_less": 8},
             'Rust': {'salary': 60, "gladness_less": 6}}
-
-
-
 
 brand_of_car = {'BMW': {'fuel': 100, 'strength': 100, 'consumption': 15},
                 'Lada': {'fuel': 70, 'strength': 20, 'consumption': 8},
